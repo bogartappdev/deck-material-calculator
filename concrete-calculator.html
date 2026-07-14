@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-7TGCF36H62"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-7TGCF36H62');</script>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Estimate concrete volume, cubic yards, and bag quantities for slabs, footings, and round post holes.">
+  <title>Concrete Calculator | BuildPilot</title>
+  <link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="concrete-styles.css">
+</head>
+<body>
+<header class="topbar"><div class="container nav-wrap"><a class="brand" href="index.html"><span class="brand-mark">BP</span><span>BuildPilot</span></a><nav class="main-nav"><a href="index.html">Home</a><a href="deck-calculator.html">Deck Calculator</a><a class="active" href="concrete-calculator.html">Concrete Calculator</a></nav></div></header>
+<main>
+<section class="concrete-hero"><div class="container"><p class="eyebrow">CONCRETE PLANNING TOOL</p><h1>Concrete Calculator</h1><p>Estimate concrete volume, ready-mix cubic yards, and bag quantities for common DIY projects.</p></div></section>
+<section class="container concrete-layout">
+<section class="card"><p class="eyebrow">PROJECT INPUTS</p><h2>What are you pouring?</h2>
+<form id="concrete-form">
+<label>Project type<select id="projectType"><option value="slab" selected>Rectangular slab or footing</option><option value="round">Round post hole or column</option></select></label>
+<div id="slabFields" class="input-panel"><div class="grid two-columns"><label>Length (ft)<input id="length" type="number" min="0.1" step="0.1" value="10"></label><label>Width (ft)<input id="width" type="number" min="0.1" step="0.1" value="10"></label><label>Thickness (in)<input id="thickness" type="number" min="0.5" step="0.25" value="4"></label><label>Number of identical pours<input id="slabQuantity" type="number" min="1" step="1" value="1"></label></div></div>
+<div id="roundFields" class="input-panel hidden"><div class="grid two-columns"><label>Diameter (in)<input id="diameter" type="number" min="1" step="0.5" value="12"></label><label>Depth (in)<input id="depth" type="number" min="1" step="0.5" value="36"></label><label>Number of holes or columns<input id="roundQuantity" type="number" min="1" step="1" value="4"></label></div></div>
+<div class="grid two-columns options-grid"><label>Waste allowance<select id="waste"><option value="0.05">5%</option><option value="0.10" selected>10%</option><option value="0.15">15%</option></select></label><label>Bag size for shopping list<select id="preferredBag"><option value="40">40 lb bags</option><option value="60">60 lb bags</option><option value="80" selected>80 lb bags</option></select></label></div>
+<button class="primary-button" type="submit">Calculate concrete</button></form>
+<p class="disclaimer">Planning estimate only. Actual yield varies by product, excavation shape, subgrade, mixing, and site conditions.</p></section>
+<section class="card results-card" aria-live="polite"><div class="results-heading"><div><p class="eyebrow">ESTIMATE</p><h2>Your concrete quantity</h2></div><button id="downloadButton" class="secondary-button" type="button">Download estimate</button></div>
+<div class="concrete-summary"><div><span>Cubic yards</span><strong id="cubicYards">—</strong><small>Including selected waste</small></div><div><span>Cubic feet</span><strong id="cubicFeet">—</strong><small>Including selected waste</small></div></div>
+<h3>Estimated bag quantities</h3><p class="muted">Approximate yields; verify the yield printed on the product.</p>
+<div class="bag-grid"><article><span>40 lb bags</span><strong id="bags40">—</strong><small>Approx. 0.30 ft³ each</small></article><article><span>60 lb bags</span><strong id="bags60">—</strong><small>Approx. 0.45 ft³ each</small></article><article><span>80 lb bags</span><strong id="bags80">—</strong><small>Approx. 0.60 ft³ each</small></article></div>
+<div class="recommendation-box"><span>Shopping-list recommendation</span><strong id="preferredResult">—</strong><p id="projectSummary"></p></div></section>
+</section>
+<section class="container content-section"><div class="card concrete-content"><p class="eyebrow">HOW IT WORKS</p><h2>Understanding your estimate</h2><p>Rectangular pours use length × width × thickness. Round holes and columns use the volume of a cylinder. BuildPilot converts the result into cubic feet and cubic yards, then adds your selected waste allowance.</p><div class="tip-box"><strong>Builder’s tip</strong><p>For larger pours, compare bagged-concrete labor and cost against ready-mix delivery. One cubic yard equals 27 cubic feet and may require roughly 45 eighty-pound bags.</p></div><h3>When to add more waste</h3><p>Consider 10–15% when excavations are irregular, the subgrade is uneven, forms may bow, or access makes spills likely.</p></div></section>
+</main>
+<footer class="site-footer"><div class="container footer-grid"><div><a class="brand footer-brand" href="index.html"><span class="brand-mark">BP</span><span>BuildPilot</span></a><p>Free planning tools for practical DIY projects.</p></div><div class="footer-links"><a href="index.html">Home</a><a href="deck-calculator.html">Deck Calculator</a><a href="concrete-calculator.html">Concrete Calculator</a></div></div><div class="container copyright">© <span id="year"></span> BuildPilot. Estimates are for preliminary planning only.</div></footer>
+<script src="concrete.js"></script></body></html>
