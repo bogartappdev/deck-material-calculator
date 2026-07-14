@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Free deck material calculator for estimating deck boards, joists, beams, posts, screws, and project cost." />
+  <title>Deck Material Calculator | BuildPilot</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar"><div class="container nav-wrap"><a class="brand" href="index.html"><span class="brand-mark">BP</span><span>BuildPilot</span></a><nav class="main-nav"><a href="index.html">Home</a><a class="active" href="deck-calculator.html">Deck Calculator</a></nav></div></header><header class="site-header">
+    <div class="container">
+      <p class="eyebrow">FREE DIY TOOL</p>
+      <h1>Deck Material Calculator</h1>
+      <p class="subtitle">Estimate boards, framing, fasteners, and rough material cost in under a minute.</p>
+    </div>
+  </header>
+
+  <main class="container layout">
+    <section class="card calculator-card" aria-labelledby="calculator-heading">
+      <h2 id="calculator-heading">Deck dimensions</h2>
+
+      <form id="deck-form">
+        <div class="grid two-columns">
+          <label>
+            Deck length (ft)
+            <input id="deckLength" type="number" min="1" step="0.1" value="20" required />
+          </label>
+
+          <label>
+            Deck width (ft)
+            <input id="deckWidth" type="number" min="1" step="0.1" value="11" required />
+          </label>
+
+          <label>
+            Board length (ft)
+            <select id="boardLength">
+              <option value="8">8 ft</option>
+              <option value="10">10 ft</option>
+              <option value="12" selected>12 ft</option>
+              <option value="16">16 ft</option>
+              <option value="20">20 ft</option>
+            </select>
+          </label>
+
+          <label>
+            Actual board width
+            <select id="boardWidth">
+              <option value="5.5" selected>5.5 in (nominal 1×6 or 5/4×6)</option>
+              <option value="3.5">3.5 in (nominal 1×4)</option>
+            </select>
+          </label>
+
+          <label>
+            Gap between boards
+            <select id="boardGap">
+              <option value="0.125">1/8 in</option>
+              <option value="0.1875" selected>3/16 in</option>
+              <option value="0.25">1/4 in</option>
+            </select>
+          </label>
+
+          <label>
+            Joist spacing
+            <select id="joistSpacing">
+              <option value="12">12 in on center</option>
+              <option value="16" selected>16 in on center</option>
+              <option value="24">24 in on center</option>
+            </select>
+          </label>
+
+          <label>
+            Waste allowance
+            <select id="waste">
+              <option value="0.05">5%</option>
+              <option value="0.10" selected>10%</option>
+              <option value="0.15">15%</option>
+              <option value="0.20">20%</option>
+            </select>
+          </label>
+
+          <label>
+            Price per deck board ($)
+            <input id="boardPrice" type="number" min="0" step="0.01" value="14.98" />
+          </label>
+
+          <label>
+            Price per joist ($)
+            <input id="joistPrice" type="number" min="0" step="0.01" value="18.00" />
+          </label>
+
+          <label>
+            Price per 1,000 screws ($)
+            <input id="screwPrice" type="number" min="0" step="0.01" value="59.00" />
+          </label>
+        </div>
+
+        <fieldset>
+          <legend>Framing assumptions</legend>
+          <div class="checkbox-row">
+            <label class="checkbox-label">
+              <input id="includeRimJoists" type="checkbox" checked />
+              Include four rim/band joists
+            </label>
+            <label class="checkbox-label">
+              <input id="doubleBeam" type="checkbox" checked />
+              Use a double beam
+            </label>
+          </div>
+        </fieldset>
+
+        <button type="submit" class="primary-button">Calculate materials</button>
+      </form>
+
+      <p class="disclaimer">
+        Planning estimate only. Structural spans, footings, ledger attachment, guards, stairs, and permits must comply with local code and manufacturer requirements.
+      </p>
+    </section>
+
+    <section class="card results-card" aria-live="polite">
+      <div class="results-heading">
+        <div>
+          <p class="eyebrow">ESTIMATE</p>
+          <h2>Your material list</h2>
+        </div>
+        <button id="downloadButton" class="secondary-button" type="button">Download shopping list</button>
+      </div>
+
+      <div class="summary-strip">
+        <div>
+          <span>Deck area</span>
+          <strong id="deckArea">220 sq ft</strong>
+        </div>
+        <div>
+          <span>Estimated cost</span>
+          <strong id="estimatedCost">$0</strong>
+        </div>
+      </div>
+
+      <div class="result-grid">
+        <article class="result-item">
+          <span>Deck boards</span>
+          <strong id="deckBoards">—</strong>
+          <small id="deckBoardsDetail"></small>
+        </article>
+
+        <article class="result-item">
+          <span>Field joists</span>
+          <strong id="joists">—</strong>
+          <small id="joistsDetail"></small>
+        </article>
+
+        <article class="result-item">
+          <span>Rim / band joists</span>
+          <strong id="rimJoists">—</strong>
+          <small id="rimJoistsDetail"></small>
+        </article>
+
+        <article class="result-item">
+          <span>Beam plies</span>
+          <strong id="beamBoards">—</strong>
+          <small id="beamBoardsDetail"></small>
+        </article>
+
+        <article class="result-item">
+          <span>Posts</span>
+          <strong id="posts">—</strong>
+          <small>Conceptual estimate at roughly 6 ft spacing</small>
+        </article>
+
+        <article class="result-item">
+          <span>Deck screws</span>
+          <strong id="screws">—</strong>
+          <small id="screwsDetail"></small>
+        </article>
+      </div>
+
+      <div class="cost-breakdown">
+        <h3>Cost breakdown</h3>
+        <table>
+          <tbody>
+            <tr>
+              <td>Deck boards</td>
+              <td id="boardCost">$0.00</td>
+            </tr>
+            <tr>
+              <td>Joists and rim boards</td>
+              <td id="joistCost">$0.00</td>
+            </tr>
+            <tr>
+              <td>Screws</td>
+              <td id="screwCost">$0.00</td>
+            </tr>
+            <tr class="total-row">
+              <td>Subtotal</td>
+              <td id="subtotal">$0.00</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="muted">Beam lumber, posts, footings, connectors, railing, stairs, tax, delivery, and tools are not included in the subtotal.</p>
+      </div>
+    </section>
+  </main>
+
+  <section class="container content-section">
+    <div class="card">
+      <h2>How this calculator works</h2>
+      <p>
+        The calculator estimates decking by dividing the deck width by the combined board width and gap, then converts the required linear footage into purchasable boards. Joists are estimated from the selected on-center spacing. Fasteners assume two screws at each board-to-joist intersection.
+      </p>
+      <h3>Before purchasing materials</h3>
+      <p>
+        Confirm the direction of your decking, available stock lengths, required beam and joist spans, footing depth, ledger details, and local permit requirements. Irregular shapes, picture framing, breaker boards, stairs, and diagonal decking require additional material.
+      </p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>© <span id="year"></span> BuildPilot. Built for preliminary DIY planning.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
