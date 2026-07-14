@@ -176,9 +176,150 @@ function downloadShoppingList() {
 form.addEventListener("submit", (event) => {
   event.preventDefault();
   calculateDeck();
+  drawDeckPreview();
 });
 
 downloadButton.addEventListener("click", downloadShoppingList);
 document.getElementById("year").textContent = new Date().getFullYear();
 
+function drawDeckPreview() {
+  const canvas = document.getElementById("deckCanvas");
+
+  if (!canvas) {
+    return;
+  }
+
+  const context = canvas.getContext("2d");
+
+  const deckLength = Number(document.getElementById("deckLength").value);
+  const deckWidth = Number(document.getElementById("deckWidth").value);
+
+  context.clearRect(0, 0, canvas.width, canvas.height);
+
+  const padding = 60;
+  const availableWidth = canvas.width - padding * 2;
+  const availableHeight = canvas.height - padding * 2;
+
+  const scale = Math.min(
+    availableWidth / deckLength,
+    availableHeight / deckWidth
+  );
+
+  const drawingWidth = deckLength * scale;
+  const drawingHeight = deckWidth * scale;
+
+  const startX = (canvas.width - drawingWidth) / 2;
+  const startY = (canvas.height - drawingHeight) / 2;
+
+  context.fillStyle = "#f4ead8";
+  context.fillRect(startX, startY, drawingWidth, drawingHeight);
+
+  context.strokeStyle = "#1d4a31";
+  context.lineWidth = 5;
+  context.strokeRect(startX, startY, drawingWidth, drawingHeight);
+
+  // Draw deck boards running parallel to the deck length
+context.strokeStyle = "#c89b63";
+context.lineWidth = 2;
+
+const boardWidthInches = Number(
+  document.getElementById("boardWidth").value
+);
+
+const boardGapInches = Number(
+  document.getElementById("boardGap").value
+);
+
+const boardModuleInches = boardWidthInches + boardGapInches;
+const deckWidthInches = deckWidth * 12;
+
+const previewBoardRows = Math.ceil(
+  deckWidthInches / boardModuleInches
+);
+
+for (let i = 1; i < previewBoardRows; i++) {
+  const y =
+    startY +
+    (drawingHeight / previewBoardRows) * i;
+
+  context.beginPath();
+  context.moveTo(startX, y);
+  context.lineTo(startX + drawingWidth, y);
+  context.stroke();
+}
+
+
+// Draw joists perpendicular to the deck boards
+context.strokeStyle = "rgba(50, 75, 60, 0.75)";
+context.lineWidth = 4;
+
+const joistSpacingInches = Number(
+  document.getElementById("joistSpacing").value
+);
+
+const deckLengthInches = deckLength * 12;
+
+const previewJoistCount =
+  Math.floor(deckLengthInches / joistSpacingInches) + 1;
+
+for (let i = 0; i < previewJoistCount; i++) {
+  const x =
+    startX +
+    (drawingWidth / Math.max(previewJoistCount - 1, 1)) * i;
+
+  context.beginPath();
+  context.moveTo(x, startY);
+  context.lineTo(x, startY + drawingHeight);
+  context.stroke();
+}
+
+
+// Draw a conceptual support beam parallel to the deck boards
+const beamY = startY + drawingHeight * 0.72;
+
+context.strokeStyle = "#7a4f2c";
+context.lineWidth = 10;
+
+context.beginPath();
+context.moveTo(startX, beamY);
+context.lineTo(startX + drawingWidth, beamY);
+context.stroke();
+
+
+// Draw conceptual support posts along the beam
+const previewPostCount = Math.max(
+  2,
+  Math.ceil(deckLength / 6) + 1
+);
+
+context.fillStyle = "#1f2b23";
+
+for (let i = 0; i < previewPostCount; i++) {
+  const x =
+    startX +
+    (drawingWidth / Math.max(previewPostCount - 1, 1)) * i;
+
+  context.beginPath();
+  context.arc(x, beamY, 10, 0, Math.PI * 2);
+  context.fill();
+}
+
+  context.fillStyle = "#1f2b23";
+  context.font = "bold 24px sans-serif";
+  context.textAlign = "center";
+
+  context.fillText(
+    `${deckLength} ft`,
+    startX + drawingWidth / 2,
+    startY - 18
+  );
+
+  context.save();
+  context.translate(startX - 24, startY + drawingHeight / 2);
+  context.rotate(-Math.PI / 2);
+  context.fillText(`${deckWidth} ft`, 0, 0);
+  context.restore();
+}
+
 calculateDeck();
+drawDeckPreview();
